@@ -1,0 +1,6 @@
+@CHARSET "ISO-8859-1";
+#bg { background-image: url('sky.png');
+	-webkit-background-size: cover !important;
+  	-moz-background-size: cover !important;   
+  	-o-background-size: cover !important;
+ 	 background-size: cover !important; }
