@@ -4,9 +4,13 @@ public class EdgeData implements edge_data{
 
 	private int src;
 	private int dest;
-	private double edgeDataWeight;
+	private double edgeDataWeight=0;
 	private String edgeDataInfo;
 	private int edgeDataTag;
+	
+	public EdgeData(double w) {
+		this.edgeDataWeight=w;
+	}
 	
 	@Override
 	public int getSrc() {
