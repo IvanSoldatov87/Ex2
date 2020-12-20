@@ -10,7 +10,6 @@ import gameClient.util.Range2D;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -21,18 +20,18 @@ import java.util.List;
  *
  */
 public class MyFrame extends JFrame{
-	private int _ind;
 	private Arena _ar;
 	private gameClient.util.Range2Range _w2f;
+
 	MyFrame(String a) {
 		super(a);
-		int _ind = 0;
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
+
 	public void update(Arena ar) {
 		this._ar = ar;
 		updateFrame();
 	}
-
 	private void updateFrame() {
 		Range rx = new Range(20,this.getWidth()-20);
 		Range ry = new Range(this.getHeight()-10,150);
@@ -61,14 +60,10 @@ public class MyFrame extends JFrame{
 	}
 	private void drawGraph(Graphics g) {
 		directed_weighted_graph gg = _ar.getGraph();
-		Iterator<node_data> iter = gg.getV().iterator();
-		while(iter.hasNext()) {
-			node_data n = iter.next();
+		for (node_data n : gg.getV()) {
 			g.setColor(Color.blue);
-			drawNode(n,5,g);
-			Iterator<edge_data> itr = gg.getE(n.getKey()).iterator();
-			while(itr.hasNext()) {
-				edge_data e = itr.next();
+			drawNode(n, 5, g);
+			for (edge_data e : gg.getE(n.getKey())) {
 				g.setColor(Color.gray);
 				drawEdge(e, g);
 			}
@@ -77,23 +72,22 @@ public class MyFrame extends JFrame{
 	private void drawPokemons(Graphics g) {
 		List<CL_Pokemon> fs = _ar.getPokemons();
 		if(fs!=null) {
-		Iterator<CL_Pokemon> itr = fs.iterator();
-		
-		while(itr.hasNext()) {
-			
-			CL_Pokemon f = itr.next();
-			Point3D c = f.getLocation();
-			int r=10;
-			g.setColor(Color.green);
-			if(f.getType()<0) {g.setColor(Color.orange);}
-			if(c!=null) {
 
-				geo_location fp = this._w2f.world2frame(c);
-				g.fillOval((int)fp.x()-r, (int)fp.y()-r, 2*r, 2*r);
-			//	g.drawString(""+n.getKey(), fp.ix(), fp.iy()-4*r);
-				
+			for (CL_Pokemon f : fs) {
+				Point3D c = f.getLocation();
+				int r = 10;
+				g.setColor(Color.green);
+				if (f.getType() < 0) {
+					g.setColor(Color.orange);
+				}
+				if (c != null) {
+
+					geo_location fp = this._w2f.world2frame(c);
+					g.fillOval((int) fp.x() - r, (int) fp.y() - r, 2 * r, 2 * r);
+					//	g.drawString(""+n.getKey(), fp.ix(), fp.iy()-4*r);
+
+				}
 			}
-		}
 		}
 	}
 	private void drawAgants(Graphics g) {
@@ -127,4 +121,5 @@ public class MyFrame extends JFrame{
 		g.drawLine((int)s0.x(), (int)s0.y(), (int)d0.x(), (int)d0.y());
 	//	g.drawString(""+n.getKey(), fp.ix(), fp.iy()-4*r);
 	}
+
 }

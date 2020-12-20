@@ -2,16 +2,16 @@ package api;
 
 public class EdgeLocation implements edge_location {
 
-	private NodeData nodeDataSrc;//src
-	private NodeData nodeDataDest;//dest
-	private EdgeData edgeData;
-	public EdgeLocation(NodeData n1,NodeData n2) {
-		this.nodeDataSrc=n1;
-		this.nodeDataDest=n1;
+	private Node nodeSrc;//src
+	private Node nodeDest;//dest
+	private Edge edge;
+	public EdgeLocation(Node n1, Node n2) {
+		this.nodeSrc =n1;
+		this.nodeDest =n1;
 	}
 	@Override
 	public edge_data getEdge() {
-		return nodeDataSrc.edgeCollection.get(nodeDataDest.getKey());
+		return nodeSrc.edgeCollection.get(nodeDest.getKey());
 	}
 
 	@Override
