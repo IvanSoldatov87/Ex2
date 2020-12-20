@@ -8,7 +8,16 @@ import org.json.JSONObject;
 import java.io.*;
 import java.util.*;
 
-
+/**
+ * 0. clone(); (copy)
+ * 1. init(graph);
+ * 2. isConnected(); // strongly (all ordered pais connected)
+ * 3. double shortestPathDist(int src, int dest);
+ * 4. List<node_data> shortestPath(int src, int dest);
+ * 5. Save(file); // JSON file
+ * 6. Load(file); // JSON file
+ *
+ */
 public class DWGraph_Algo implements dw_graph_algorithms {
 
     private directed_weighted_graph graph = new DWGraph_DS();
@@ -16,18 +25,27 @@ public class DWGraph_Algo implements dw_graph_algorithms {
     node_data tempNode=new Node();
     int maxInt=Integer.MAX_VALUE;
     Stack<Node> stack=new Stack<>();
-
+    /**
+     * Init the graph on which this set of algorithms operates on.
+     * @param g
+     */
     @Override
     public void init(directed_weighted_graph g) {
 
         this.graph = g;
     }
-
+    /**
+     * Return the underlying graph of which this class works.
+     * @return
+     */
     @Override
     public directed_weighted_graph getGraph() {
         return this.graph;
     }
-
+    /**
+     * Compute a deep copy of this weighted graph.
+     * @return
+     */
     @Override
     public directed_weighted_graph copy() {
     	directed_weighted_graph newG = new DWGraph_DS();
@@ -46,6 +64,11 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         return newG;
     }
+    /**
+     * Returns true if and only if (iff) there is a valid path from each node to each
+     * other node. NOTE: assume directional graph (all n*(n-1) ordered pairs).
+     * @return
+     */
     @Override
     public boolean isConnected() {
 
@@ -68,7 +91,10 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return true;   
     }
 
-    //need to check for connected graph and unconnected graph <-----------------------------------------------
+    /**
+     * This method run on graph.
+     * and chek if is circel prapg
+     */
     public void dfs(node_data node )
     {
         Queue<node_data> queue =new LinkedList<>();
@@ -91,9 +117,15 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         }
         
     }
-	
-    
-    //need to check for running time <---------------------------------------------------??
+
+
+    /**
+     * returns the length of the shortest path between src to dest
+     * Note: if no such path --> returns -1
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return
+     */
     @Override
     public double shortestPathDist(int src, int dest) {
     	if(graph.getV().size()<2)return 0;
@@ -103,6 +135,11 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
         return dfs2(graph.getNode(src),graph.getNode(dest));
     }
+    /**
+     * This method run on graph.
+     * and found the short path
+     * @return num
+     */
     public int  dfs2(node_data node,node_data node2 )
     {
         Queue<node_data> queue =new LinkedList<>();
@@ -137,8 +174,16 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         if(node2.getTag()==maxInt){ stack.clear();return -1;}
         return node2.getTag();     
     }
-    
-   //src--> n1-->n2-->...dest 
+
+    /**
+     * returns the the shortest path between src to dest - as an ordered List of nodes:
+     * src--> n1-->n2-->...dest
+     * see: https://en.wikipedia.org/wiki/Shortest_path_problem
+     * Note if no such path --> returns null;
+     * @param src - start node
+     * @param dest - end (target) node
+     * @return
+     */
     @Override
     public List<node_data> shortestPath(int src, int dest) {//<-not work for this class function//need to update for running function
     	if(graph.getV().size()<2)return null;
@@ -162,8 +207,13 @@ public class DWGraph_Algo implements dw_graph_algorithms {
         return result;
     }
 
-    
-    
+
+    /**
+     * Saves this weighted (directed) graph to the given
+     * file name - in JSON format
+     * @param file - the file name (may include a relative path).
+     * @return true - iff the file was successfully saved
+     */
     @Override
     public boolean save(String file) {
         if ((graph.nodeSize() == 0) || (graph == null)) return false;
@@ -216,6 +266,14 @@ public class DWGraph_Algo implements dw_graph_algorithms {
 
         }
     }
+    /**
+     * This method load a graph to this graph algorithm.
+     * if the file was successfully loaded - the underlying graph
+     * of this class will be changed (to the loaded one), in case the
+     * graph was not loaded the original graph should remain "as is".
+     * @param file - file name of JSON file
+     * @return true - iff the graph was successfully loaded.
+     */
     public boolean load(String file) {
         try {
             Gson gson = new Gson();

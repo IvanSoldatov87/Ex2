@@ -6,7 +6,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.*;
 import java.util.stream.IntStream;
-
+/**
+ * This class represents a Runnble function and imege game.
+ *it is maine class
+ * here we have AI function
+ */
 public class Ex2 implements Runnable {
 	private static MyFrame _win;
 	private static final LogInFrame lf = new LogInFrame();
@@ -16,6 +20,16 @@ public class Ex2 implements Runnable {
 	private directed_weighted_graph gg;
 	private static ArrayList<Integer> agentActyvity = new ArrayList<>();
 	private static HashMap<String, Double> marshrut = new HashMap<>();
+
+	/**
+	 * main function
+	 * this function get 2 parameters of outside
+	 * and implement them
+	 * or you can enter them
+	 * This function stars new thread how run and update the game
+	 * @param a
+	 */
+
 
 	public static void main(String[] a) {
 		if (a.length > 0) {
@@ -40,6 +54,12 @@ public class Ex2 implements Runnable {
 		client.start();
 	}
 
+	/**
+	 * This main function of Thread
+	 * this function load the graph from server
+	 * and init them in application
+	 * more of then he run loop to repaint"update" graph,pokemon location and adgent location
+	 */
 	@Override
 	public void run() {
 		game_service game = Game_Server_Ex2.getServer(lvl); // you have [0,23] games
@@ -64,6 +84,12 @@ public class Ex2 implements Runnable {
 		System.exit(0);
 	}
 
+	/**
+	 * function lo load JSON from server to our application
+	 * ang convert to class
+	 * @param s
+	 * @return g
+	 */
 	public static directed_weighted_graph loadGraph(String s) {
 		directed_weighted_graph g = new DWGraph_DS();
 		try {
@@ -88,6 +114,13 @@ public class Ex2 implements Runnable {
 		}
 		return g;
 	}
+
+	/**
+	 * Function to calculate agent moves
+	 * moves must be efficient and small in number
+	 * @param game
+	 * @param gg
+	 */
 	private static void moveAgents(game_service game, directed_weighted_graph gg) {
 
 		String agentStatus = game.move();
@@ -106,7 +139,16 @@ public class Ex2 implements Runnable {
 			}
 		}
 	}
-private static List<node_data> nextNode(directed_weighted_graph g, int src,CL_Agent ag) {
+
+	/**
+	 * function to calculete correct path for agent to next move
+	 * and rebalanse old path
+	 * @param g
+	 * @param src
+	 * @param ag
+	 * @return
+	 */
+	private static List<node_data> nextNode(directed_weighted_graph g, int src,CL_Agent ag) {
 
 		dw_graph_algorithms agg = new DWGraph_Algo();
 		agg.init(g);
@@ -139,6 +181,12 @@ private static List<node_data> nextNode(directed_weighted_graph g, int src,CL_Ag
 		path.add(g.getNode(pDest));
 		return path;
 	}
+
+	/**
+	 * function to init server data to our application
+	 * convert JSON text to out classes
+	 * @param game
+	 */
 	private void init(game_service game) {
 		String fs = game.getPokemons();
 		directed_weighted_graph gg = this.gg;
